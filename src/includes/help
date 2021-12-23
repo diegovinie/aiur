@@ -2,8 +2,9 @@
 
 cat << EOM
 Lista de comandos:
-    enable      $APP_NAME enable [name]      
+    enable      $APP_NAME enable [name]
     disable     $APP_NAME disable [dirname]
     clean       $APP_NAME clean
-    help        
+    image       $APP_NAME image optimize ORIGEN
+    help
 EOM

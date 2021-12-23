@@ -5,6 +5,16 @@ S_MB=$(( 1024 * 1024 ))
 IMAGE_SIZE_BIG=$(( 2 * $S_MB ))
 IMAGE_SIZE_MED=$(( 1 * $S_MB ))
 
+# Check ImageMagick
+if ! command -v magick &> /dev/null
+then
+    echo "Instale ImageMagick primero. https://imagemagick.org/script/download.php#linux"
+    echo
+    echo "Saliendo"
+    echo
+    exit 1
+fi
+
 is_image(){
     local PATTERN="(jpg|png|JPG|PNG)$"
     local res=0
