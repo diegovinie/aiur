@@ -1,5 +1,10 @@
 #!/bin/bash
 
+S_MB=$(( 1024 * 1024 ))
+
+IMAGE_SIZE_BIG=$(( 2 * $S_MB ))
+IMAGE_SIZE_MED=$(( 1 * $S_MB ))
+
 is_image(){
     local PATTERN="(jpg|png|JPG|PNG)$"
     local res=0
@@ -9,18 +14,27 @@ is_image(){
 }
 
 reduce_image(){
-    echo "Reduce $1"
-    safemode magick convert $1 -resize 50% $1
+    echo "Check $1"
+    local SIZE=$(get_file_size $1)
+
+    if [[ $SIZE -gt $IMAGE_SIZE_BIG ]]; then
+        echo "Reduciendo 50% de $1"
+        safemode magick convert $1 -resize 50% $1
+
+    elif [[ $SIZE -gt $IMAGE_SIZE_MED ]]; then
+        echo "Reduciendo 25% de $1"
+        safemode magick convert $1 -resize 25% $1
+    fi
 }
 
 reduce_image_rec(){
     for filename in $1/*; do
-        if [ -d $1 ]; then 
+        if [ -d $1 ]; then
             reduce_image_rec $filename
         elif [[ $(is_image $1) == 1 ]]; then
             reduce_image $1
         else
             echo "Saltando $1"
         fi
-    done 
+    done
 }

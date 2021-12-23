@@ -8,3 +8,7 @@ if [[ $AIUR_SAFE_MODE == true ]]; then
     echo "--- SAFE MODE ---"
     echo
 fi
+
+get_file_size(){
+    stat --format=%s $1
+}
