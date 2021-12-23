@@ -1,0 +1,30 @@
+#! /bin/bash
+
+DIR_SCRIPT=$(dirname $(readlink -f $0))
+DIR_TARGET=$HOME/.aiur
+DIR_BIN=$HOME/bin
+
+echo "Desea continuar (y/N)"
+read CONTINUE
+
+if [[ $CONTINUE != 'y' ]]; then
+    echo "Saliendo."
+    exit 0
+fi
+
+if [ -d $DIR_TARGET ]; then
+    rm -rf $DIR_TARGET
+fi
+
+mkdir -p $DIR_TARGET
+
+
+cp -r $DIR_SCRIPT/../src/* $DIR_TARGET
+
+if [ -f $DIR_BIN/aiur ]; then
+    rm $DIR_BIN/aiur
+fi
+
+ln -s $DIR_TARGET/aiur $DIR_BIN/aiur
+
+echo "Hecho."
