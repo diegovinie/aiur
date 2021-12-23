@@ -1,0 +1,10 @@
+#!/bin/bash
+
+safemode(){
+    if [[ $AIUR_SAFE_MODE != true ]]; then $@; fi
+}
+
+if [[ $AIUR_SAFE_MODE == true ]]; then
+    echo "--- SAFE MODE ---"
+    echo
+fi

@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 set -e
 
 WORK_DIR=$HOME/storage/misc
@@ -6,6 +6,9 @@ APP_NAME=aiur
 
 echo "For Aiur!"
 echo
+
+. includes/common
+
 
 if [[ $1 == "enable" ]]; then
     echo "Montando $2"
@@ -44,17 +47,32 @@ elif [[ $1 == 'clean' ]]; then
     rm -rf $THUMB_ROUTE
     echo "Hecho."
 
+elif [[ $1 == 'image' ]]; then
+    . includes/image
+
+    if [[ $2 == 'optimize' ]]; then
+        echo "Reduciendo el tamaño de $3"
+        SOURCE=$(pwd)/$3
+
+        if [ -d $SOURCE ]; then
+            reduce_image_rec $SOURCE
+        else
+            echo 'No es directorio.'
+        fi
+    else
+        echo "No se hizo nada."
+        exit 1
+    fi
+
+elif [[ $1 == 'test' ]]; then
+    echo 'testing:'
+
 elif [[ $1 == 'help' ]]; then
-    cat << EOM
-Lista de comandos:
-    enable      $APP_NAME enable [name]      
-    disable     $APP_NAME disable [dirname]
-    clean       $APP_NAME clean
-    help        
-EOM
+    . includes/help
 
 else
     echo "No se reconoce el comando $1."
 fi
 
 echo
+

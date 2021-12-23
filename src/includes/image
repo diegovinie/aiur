@@ -1,0 +1,26 @@
+#!/bin/bash
+
+is_image(){
+    local PATTERN="(jpg|png|JPG|PNG)$"
+    local res=0
+
+    if [[ $1 =~ $PATTERN ]]; then res=1; fi
+    echo $res
+}
+
+reduce_image(){
+    echo "Reduce $1"
+    safemode magick convert $1 -resize 50% $1
+}
+
+reduce_image_rec(){
+    for filename in $1/*; do
+        if [ -d $1 ]; then 
+            reduce_image_rec $filename
+        elif [[ $(is_image $1) == 1 ]]; then
+            reduce_image $1
+        else
+            echo "Saltando $1"
+        fi
+    done 
+}

@@ -1,0 +1,9 @@
+#! /bin/bash
+
+cat << EOM
+Lista de comandos:
+    enable      $APP_NAME enable [name]      
+    disable     $APP_NAME disable [dirname]
+    clean       $APP_NAME clean
+    help        
+EOM
