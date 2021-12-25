@@ -14,9 +14,8 @@ if [[ $1 == "enable" ]]; then
     echo "Montando $2"
 
     if [ -d $WORK_DIR/.$2_encfs ]; then
-        echo "yeah"
         mkdir -p $WORK_DIR/$2
-        encfs $WORK_DIR/.$2_encfs $WORK_DIR/$2
+        safemode encfs $WORK_DIR/.$2_encfs $WORK_DIR/$2
 
         echo "Open folder? (y/N)"
         read OPEN
@@ -33,7 +32,7 @@ elif [[ $1 == "disable" ]]; then
     if [[ $1 == "disable" ]]; then
         echo "Desmontando $2"
         if [ -d $WORK_DIR/$2 ]; then
-            fusermount -u $WORK_DIR/$2
+            safemode fusermount -u $WORK_DIR/$2
             echo "Hecho."
         else
             echo "No existe $WORK_DIR/$2"
@@ -44,7 +43,7 @@ elif [[ $1 == "disable" ]]; then
 elif [[ $1 == 'clean' ]]; then
     THUMB_ROUTE=$HOME/.cache/thumbnails
     echo "Borrando thumbnails"
-    rm -rf $THUMB_ROUTE
+    safemode rm -rf $THUMB_ROUTE
     echo "Hecho."
 
 elif [[ $1 == 'image' ]]; then
