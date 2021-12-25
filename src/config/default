@@ -1,0 +1,4 @@
+# Aiur config file
+
+APP_VERSION=1.1
+AIUR_SAFE_MODE=false
