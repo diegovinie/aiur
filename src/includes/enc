@@ -1,0 +1,61 @@
+#!/bin/bash
+
+cat << EOM
+Opciones disponibles:
+  1     montar directorio encriptado
+  2     desmontar directorio encriptado
+  3     limpiar thumbnails cache
+  q     salir
+
+EOM
+
+read -p "Introduzca su elecction: " option
+
+if [[ $option == 'q' ]]; then
+    echo
+    echo Saliendo.
+    echo
+    exit 0
+
+elif [[ $option == '1' ]]; then
+    read -p "Introduzca el nombre: " unit
+
+    echo "Montando $unit"
+
+    if [ -d $DIR_ENC/.$unit_encfs ]; then
+        mkdir -p $DIR_ENC/$unit
+        safemode encfs $DIR_ENC/."$unit"_encfs $DIR_ENC/$unit
+
+        echo "Open folder? (y/N)"
+        read OPEN
+        if [[ $OPEN == "y" ]]; then
+            gnome-open $DIR_ENC/$unit
+        fi
+        echo "Hecho."
+    else
+        echo "No encuentra .$unit_encfs"
+        exit 1
+    fi
+
+elif [[ $option == '2' ]]; then
+    read -p "Introduzca el nombre: " unit
+
+    echo "Desmontando $unit"
+
+    if [ -d $DIR_ENC/$unit ]; then
+        safemode fusermount -u $DIR_ENC/$unit
+        echo "Hecho."
+    else
+        echo "No existe $DIR_ENC/$unit"
+        exit 1
+    fi
+
+elif [[ $option == '3' ]]; then
+    echo "Borrando thumbnails"
+    safemode rm -rf $DIR_THUMBNAILS
+    echo "Hecho."
+
+else
+    echo "No se reconoce la opción: $option"
+    exit 1
+fi

@@ -1,7 +1,6 @@
 #! /bin/bash
 set -e
 
-WORK_DIR=$HOME/storage/misc
 APP_NAME=aiur
 DIR_SCRIPT=$(dirname $(readlink -f $0))
 
@@ -10,41 +9,11 @@ echo
 
 . $DIR_SCRIPT/includes/common
 
-if [[ $1 == "enable" ]]; then
-    echo "Montando $2"
+if [[ $1 == 'version' ]]; then
+    echo "Aiur version $APP_VERSION"
 
-    if [ -d $WORK_DIR/.$2_encfs ]; then
-        mkdir -p $WORK_DIR/$2
-        safemode encfs $WORK_DIR/.$2_encfs $WORK_DIR/$2
-
-        echo "Open folder? (y/N)"
-        read OPEN
-        if [[ $OPEN == "y" ]]; then
-            gnome-open $WORK_DIR/$2
-        fi
-        echo "Hecho."
-    else
-        echo "No encuentra .$2_encfs"
-        exit 1
-    fi
-
-elif [[ $1 == "disable" ]]; then
-    if [[ $1 == "disable" ]]; then
-        echo "Desmontando $2"
-        if [ -d $WORK_DIR/$2 ]; then
-            safemode fusermount -u $WORK_DIR/$2
-            echo "Hecho."
-        else
-            echo "No existe $WORK_DIR/$2"
-            exit 1
-        fi
-    fi
-
-elif [[ $1 == 'clean' ]]; then
-    THUMB_ROUTE=$HOME/.cache/thumbnails
-    echo "Borrando thumbnails"
-    safemode rm -rf $THUMB_ROUTE
-    echo "Hecho."
+elif [[ $1 == 'enc' ]]; then
+    . $DIR_SCRIPT/includes/enc
 
 elif [[ $1 == 'image' ]]; then
     . $DIR_SCRIPT/includes/image
@@ -68,9 +37,6 @@ elif [[ $1 == 'test' ]]; then
 
 elif [[ $1 == 'help' ]]; then
     . $DIR_SCRIPT/includes/help
-
-elif [[ $1 == 'version' ]]; then
-    echo "Aiur version $APP_VERSION"
 
 else
     echo "No se reconoce el comando $1."
