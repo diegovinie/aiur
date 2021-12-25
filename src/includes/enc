@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if ! command -v encfs &> /dev/null
+then
+    echo "Instale EncFS primero. https://vgough.github.io/encfs"
+    echo
+    echo "Saliendo"
+    echo
+    exit 1
+fi
+
 cat << EOM
 Opciones disponibles:
   1     montar directorio encriptado
