@@ -2,9 +2,10 @@
 
 cat << EOM
 Lista de comandos:
-    enable      $APP_NAME enable [name]
-    disable     $APP_NAME disable [dirname]
-    clean       $APP_NAME clean
+    version     Display $APP_NAME version
+    enc         EncFS related tools
     image       $APP_NAME image optimize ORIGEN
+    q-ping      Perform a quick network test and dispatch a notification
+    top         Open top in a new window
     help
 EOM

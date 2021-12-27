@@ -1,6 +1,9 @@
 # Aiur config file
 
-APP_VERSION=1.1.1
+APP_VERSION=1.2.0
 AIUR_SAFE_MODE=false
 DIR_ENC=~/storage/misc
 DIR_THUMBNAILS=~/.cache/thumbnails
+TERMINAL=gnome-terminal
+
+###################################

@@ -32,6 +32,18 @@ elif [[ $1 == 'image' ]]; then
         exit 1
     fi
 
+elif [[ $1 == 'q-ping' ]]; then
+    result=$(ping -q -c 4 yahoo.com)
+
+    while IFS= read -r line ; do
+        if [[ $line =~ "packet loss" ]]; then
+            notify-send "Ping to yahoo" "$line"
+        fi
+    done <<< "$result"
+
+elif [[ $1 == 'top' ]]; then
+    $TERMINAL -- top -e m -E g
+
 elif [[ $1 == 'test' ]]; then
     echo 'testing:'
 
