@@ -5,5 +5,6 @@ AIUR_SAFE_MODE=false
 DIR_ENC=~/storage/misc
 DIR_THUMBNAILS=~/.cache/thumbnails
 TERMINAL=gnome-terminal
+AIUR_BIG_APP_1=GeckoMain,WebExtensions
 
 ###################################

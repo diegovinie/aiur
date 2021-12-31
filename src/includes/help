@@ -7,5 +7,7 @@ Lista de comandos:
     image       $APP_NAME image optimize ORIGEN
     q-ping      Perform a quick network test and dispatch a notification
     top         Open top in a new window
+    mem         $APP_NAME mem proc <proc_name>
+                $APP_NAME mem app1
     help
 EOM
