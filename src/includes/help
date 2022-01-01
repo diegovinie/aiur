@@ -9,5 +9,6 @@ Lista de comandos:
     top         Open top in a new window
     mem         $APP_NAME mem proc <proc_name>
                 $APP_NAME mem app1
+    kill        $APP_NAME kill <proc_name> // sends a SIGKILL to the process
     help
 EOM

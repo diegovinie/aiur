@@ -47,6 +47,11 @@ elif [[ $1 == 'top' ]]; then
 elif [[ $1 == 'mem' ]]; then
     . $DIR_SCRIPT/includes/mem.sh
 
+elif [[ $1 == 'kill' ]]; then
+    mem_used=$($0 mem proc $2)
+    notify-send "Killing <$2>" "$mem_used"
+    killall -s SIGKILL $2
+
 elif [[ $1 == 'test' ]]; then
     echo 'testing:'
 
