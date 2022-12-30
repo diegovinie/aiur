@@ -3,4 +3,7 @@
 # AIUR_SAFE_MODE=true
 # TERMINAL=gnome-terminal
 
+AIUR_SYNC_SERVICE=gdrive
+AIUR_SYNC_DIRECTORIES=Documents,
+
 ##########################
