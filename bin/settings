@@ -4,6 +4,6 @@
 # TERMINAL=gnome-terminal
 
 AIUR_SYNC_SERVICE=gdrive
-AIUR_SYNC_DIRECTORIES=Documents,
+AIUR_SYNC_DIRECTORIES=Documents:Documents,
 
 ##########################

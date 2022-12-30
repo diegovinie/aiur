@@ -10,21 +10,27 @@ then
 fi
 
 push_dir(){
-    local dir=$1
-    echo "Pushing $dir"
-    rclone sync $HOME/$dir $AIUR_SYNC_SERVICE:$dir
+    local local_dir=$(get_element_string 0 $1)
+    local remote_dir=$(get_element_string 1 $1)
+
+    echo "Pushing $1"
+    rclone sync $HOME/$local_dir $AIUR_SYNC_SERVICE:$remote_dir
 }
 
 pull_dir(){
-    local dir=$1
-    echo "Pulling $dir"
-    rclone copy $HOME/$dir $HOME/.aiur/dir_backup/$dir
-    rclone sync $AIUR_SYNC_SERVICE:$dir $HOME/$dir
+    local local_dir=$(get_element_string 0 $1)
+    local remote_dir=$(get_element_string 1 $1)
+
+    echo "Pulling $1"
+    rclone copy $HOME/$local_dir $HOME/.aiur/dir_backup/$local_dir
+    rclone sync $AIUR_SYNC_SERVICE:$remote_dir $HOME/$local_dir
 }
 
 check_dir(){
-    local dir=$1
-    rclone check $AIUR_SYNC_SERVICE:$dir $HOME/$dir
+    local local_dir=$(get_element_string 0 $1)
+    local remote_dir=$(get_element_string 1 $1)
+
+    rclone check $AIUR_SYNC_SERVICE:$remote_dir $HOME/$local_dir
     echo "---"
     echo
 }

@@ -6,5 +6,6 @@ DIR_ENC=~/storage/misc
 DIR_THUMBNAILS=~/.cache/thumbnails
 TERMINAL=gnome-terminal
 AIUR_BIG_APP_1=GeckoMain,WebExtensions
+AIUR_SYNC_SERVICE=gdrive
 
 ###################################

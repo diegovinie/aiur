@@ -37,3 +37,17 @@ display_numerate_list(){
         n=$((1+$n))
     done
 }
+
+get_element_string() {
+    local sep=':'
+    local n=$1
+    local str=$2$sep
+    local array=()
+
+    while [[ $str ]]; do
+        array+=( "${str%%"$sep"*}" );
+        str=${str#*"$sep"};
+    done
+
+    echo ${array[$n]}
+}
