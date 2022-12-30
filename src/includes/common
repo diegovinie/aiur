@@ -20,3 +20,20 @@ safemode(){
 get_file_size(){
     stat --format=%s $1
 }
+
+check_in_array(){
+    set +e
+    local e match="$1"
+    shift
+    for e; do [[ "$e" == "$match" ]] && return 0; done
+    return 1
+}
+
+display_numerate_list(){
+    local item n=1
+
+    for item; do
+        echo "$n $item"
+        n=$((1+$n))
+    done
+}

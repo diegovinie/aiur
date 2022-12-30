@@ -9,35 +9,181 @@ then
     exit 1
 fi
 
+push_dir(){
+    local dir=$1
+    echo "Pushing $dir"
+    rclone sync $HOME/$dir $AIUR_SYNC_SERVICE:$dir
+}
+
+pull_dir(){
+    local dir=$1
+    echo "Pulling $dir"
+    rclone copy $HOME/$dir $HOME/.aiur/dir_backup/$dir
+    rclone sync $AIUR_SYNC_SERVICE:$dir $HOME/$dir
+}
+
+check_dir(){
+    local dir=$1
+    rclone check $AIUR_SYNC_SERVICE:$dir $HOME/$dir
+    echo "---"
+    echo
+}
+
+display_menu(){
+    local dir
+
+    echo
+    echo Conectado a $AIUR_SYNC_SERVICE, directorios:
+    echo
+    display_numerate_list ${dirs[@]}
+    echo q Quit
+    echo
+    read -p "Seleccione un directorio: " SELECTION
+
+    if [[ $SELECTION == 'q' ]]; then
+        echo Saliendo
+        return
+    fi
+
+    dir=${dirs[$(($SELECTION-1))]}
+
+    check_in_array $dir ${dirs[@]}
+    if [[ $dir == '' ]]; then
+        display_menu
+    else
+        display_action_menu $dir
+    fi
+}
+
+display_action_menu(){
+    local dir=$1
+
+    echo
+    echo "Acciones sobre <$dir>:"
+    echo 1 Push
+    echo 2 Pull
+    echo 3 Check
+    echo b Back
+    echo q Quit
+    echo
+
+    read -p "Seleccione una acción: " ACTION
+
+    if [[ $ACTION == 'q' ]]; then
+        echo Saliendo
+        return
+
+    elif [[ $ACTION == 'b' ]]; then
+        display_menu
+        return
+
+    elif [[ $ACTION == '1' ]]; then
+        push_dir $dir
+        # display_action_menu $dir
+
+    elif [[ $ACTION == '2' ]]; then
+        pull_dir $dir
+        # display_action_menu $dir
+
+    elif [[ $ACTION == '3' ]]; then
+        check_dir $dir
+
+    fi
+
+    display_action_menu $dir
+}
+
 IFS=',' read -r -a dirs <<< $AIUR_SYNC_DIRECTORIES
 
-if [[ $2 == 'pull' ]]; then
+if [[ $2 == '' ]]; then
+    display_menu
+
+elif [[ $2 == 'pull' ]]; then
     echo "pull from $AIUR_SYNC_SERVICE:"
     echo
 
-    IFS=',' read -r -a dirs <<< $AIUR_SYNC_DIRECTORIES
+    if [[ $3 != '' ]]; then
+        dir=$3
 
-    for dir in "${dirs[@]}"; do
-        echo "Pulling $dir"
-        rclone copy $HOME/$dir $HOME/.aiur/dir_backup/$dir
-        rclone sync $AIUR_SYNC_SERVICE:$dir $HOME/$dir
-    done
+        if [[ $3 == 'all' ]]; then
+            for dir in "${dirs[@]}"; do
+                pull_dir $dir
+            done
+            echo
+            echo "Todo hecho."
 
-    echo
-    echo "Todo hecho."
+        else
+            check_in_array $dir ${dirs[@]}
+
+            if [[ $? != '0' ]]; then
+                echo "No se reconoce el directorio <$dir>"
+            else
+                pull_dir $dir
+            fi
+        fi
+
+    else
+        display_numerate_list ${dirs[@]}
+        echo q Quit
+        echo
+        read -p "Seleccione un directorio: " SELECTION
+
+        if [[ $SELECTION == 'q' ]]; then
+            echo Saliendo
+        else
+            dir=${dirs[$(($SELECTION-1))]}
+            check_in_array $dir ${dirs[@]}
+
+            if [[ $? == '0' ]]; then
+                pull_dir $dir
+            else
+                echo "No se reconoce el directorio <$dir>"
+            fi
+        fi
+    fi
 
 elif [[ $2 == 'push' ]]; then
     echo "push to $AIUR_SYNC_SERVICE"
     echo
 
-    for dir in "${dirs[@]}"; do
-        echo "Pushing $dir"
-        rclone sync $HOME/$dir $AIUR_SYNC_SERVICE:$dir
-    done
+    if [[ $3 != '' ]]; then
+        dir=$3
 
-    echo
-    echo "Todo hecho."
+        if [[ $3 == 'all' ]]; then
+            for dir in "${dirs[@]}"; do
+                push_dir $dir
+            done
 
+            echo
+            echo "Todo hecho."
+        else
+            check_in_array $dir ${dirs[@]}
+
+            if [[ $? != '0' ]]; then
+                echo "No se reconoce el directorio <$dir>"
+            else
+                push_dir $dir
+            fi
+        fi
+    else
+        display_numerate_list ${dirs[@]}
+        echo q Quit
+        echo
+        read -p "Seleccione un directorio: " SELECTION
+
+        if [[ $SELECTION == 'q' ]]; then
+            echo Saliendo
+        else
+            dir=${dirs[$(($SELECTION-1))]}
+            check_in_array $dir ${dirs[@]}
+
+            if [[ $? == '0' ]]; then
+                push_dir $dir
+            else
+                echo "No se reconoce el directorio <$dir>"
+            fi
+        fi
+    fi
 else
-    echo "No se reconoce el comando $2."
+    echo "No se reconoce el comando <$2>."
 fi
