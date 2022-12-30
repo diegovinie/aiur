@@ -55,6 +55,9 @@ elif [[ $1 == 'kill' ]]; then
 elif [[ $1 == 'test' ]]; then
     echo 'testing:'
 
+elif [[ $1 == 'sync' ]]; then
+    . $DIR_SCRIPT/includes/sync
+
 elif [[ $1 == 'help' ]]; then
     . $DIR_SCRIPT/includes/help
 

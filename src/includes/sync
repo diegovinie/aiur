@@ -1,0 +1,43 @@
+#!/bin/bash
+
+if ! command -v rclone &> /dev/null
+then
+    echo "Instale Rclone primero."
+    echo
+    echo "Saliendo"
+    echo
+    exit 1
+fi
+
+IFS=',' read -r -a dirs <<< $AIUR_SYNC_DIRECTORIES
+
+if [[ $2 == 'pull' ]]; then
+    echo "pull from $AIUR_SYNC_SERVICE:"
+    echo
+
+    IFS=',' read -r -a dirs <<< $AIUR_SYNC_DIRECTORIES
+
+    for dir in "${dirs[@]}"; do
+        echo "Pulling $dir"
+        rclone copy $HOME/$dir $HOME/.aiur/dir_backup/$dir
+        rclone sync $AIUR_SYNC_SERVICE:$dir $HOME/$dir
+    done
+
+    echo
+    echo "Todo hecho."
+
+elif [[ $2 == 'push' ]]; then
+    echo "push to $AIUR_SYNC_SERVICE"
+    echo
+
+    for dir in "${dirs[@]}"; do
+        echo "Pushing $dir"
+        rclone sync $HOME/$dir $AIUR_SYNC_SERVICE:$dir
+    done
+
+    echo
+    echo "Todo hecho."
+
+else
+    echo "No se reconoce el comando $2."
+fi
