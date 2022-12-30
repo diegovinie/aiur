@@ -23,6 +23,8 @@ cp -r $DIR_SCRIPT/../src/* $DIR_TARGET
 
 cp $DIR_SCRIPT/settings $DIR_TARGET
 
+mkdir -p $DIR_BIN
+
 if [ -f $DIR_BIN/aiur ]; then
     rm $DIR_BIN/aiur
 fi
