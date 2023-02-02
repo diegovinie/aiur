@@ -9,6 +9,7 @@ Lista de comandos:
     top         Open top in a new window
     mem         $APP_NAME mem proc <proc_name>
                 $APP_NAME mem app1
+    unity-git   Fetch .gitignore file for Unity from Github
     sync        $APP_NAME sync pull // trae cambios del remoto
                 $APP_NAME sync push // envía cambios al remoto
     kill        $APP_NAME kill <proc_name> // sends a SIGKILL to the process

@@ -58,6 +58,11 @@ elif [[ $1 == 'test' ]]; then
 elif [[ $1 == 'sync' ]]; then
     . $DIR_SCRIPT/includes/sync
 
+elif [[ $1 == 'unity-git' ]]; then
+    echo 'Fetching .gitignore file'
+    curl https://raw.githubusercontent.com/github/gitignore/master/Unity.gitignore --output .gitignore
+    echo 'done'
+
 elif [[ $1 == 'help' ]]; then
     . $DIR_SCRIPT/includes/help
 
